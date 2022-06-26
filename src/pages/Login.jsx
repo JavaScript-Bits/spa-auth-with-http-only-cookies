@@ -1,4 +1,5 @@
 import { LockClosedIcon } from "@heroicons/react/outline";
+import axios from "axios";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { attemptLogin } from "../features/auth";
@@ -7,6 +8,22 @@ export default function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const dispatch = useDispatch();
+
+  const BASE_URL = "http://localhost:8001";
+
+  const handleLogin = () => {
+    axios
+      .post(`${BASE_URL}/api/login`, { email, password })
+      .then(({ data, status }) => {
+        if (status === 200) {
+          dispatch(
+            attemptLogin({
+              user: data,
+            })
+          );
+        }
+      });
+  };
 
   return (
     <>
@@ -34,12 +51,7 @@ export default function Login() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              dispatch(
-                attemptLogin({
-                  email,
-                  password,
-                })
-              );
+              handleLogin();
             }}
             className="mt-8 space-y-6"
             action="#"
