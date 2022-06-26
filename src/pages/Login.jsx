@@ -1,17 +1,15 @@
 import { LockClosedIcon } from "@heroicons/react/outline";
-import React from "react";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { attemptLogin } from "../features/auth";
 
 export default function Login() {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const dispatch = useDispatch();
+
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-50">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
@@ -33,7 +31,20 @@ export default function Login() {
               </a>
             </p>
           </div>
-          <form className="mt-8 space-y-6" action="#" method="POST">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              dispatch(
+                attemptLogin({
+                  email,
+                  password,
+                })
+              );
+            }}
+            className="mt-8 space-y-6"
+            action="#"
+            method="POST"
+          >
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
@@ -41,6 +52,7 @@ export default function Login() {
                   Email address
                 </label>
                 <input
+                  onChange={(e) => setEmail(e.target.value)}
                   id="email-address"
                   name="email"
                   type="email"
@@ -55,6 +67,7 @@ export default function Login() {
                   Password
                 </label>
                 <input
+                  onChange={(e) => setPassword(e.target.value)}
                   id="password"
                   name="password"
                   type="password"
