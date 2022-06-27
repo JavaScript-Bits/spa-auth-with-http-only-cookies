@@ -1,6 +1,7 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
 import axios from "axios";
 import { useState } from "react";
+import { signIn } from "../../services/authService";
 export default function LoginForm({
   afterSubmit,
 }: {
@@ -8,15 +9,13 @@ export default function LoginForm({
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    axios.post(`${API_BASE_URL}/login`, {
-      email,
-      password,
-    });
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    afterSubmit();
+    const { status } = await signIn(email, password);
+    if (status === 200) {
+      afterSubmit();
+    }
   };
   return (
     <form
