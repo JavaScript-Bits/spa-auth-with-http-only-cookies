@@ -1,9 +1,10 @@
 import AuthLayout from "../components/layout/AuthLayout";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "../components/auth/LoginForm";
 
 export default function Login() {
+  const navigateTo = useNavigate();
   return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -26,7 +27,11 @@ export default function Login() {
             </a>
           </p>
         </div>
-        <LoginForm />
+        <LoginForm
+          afterSubmit={() => {
+            navigateTo("/dashboard");
+          }}
+        />
         <div className="flex justify-center">
           <Link
             to="/"

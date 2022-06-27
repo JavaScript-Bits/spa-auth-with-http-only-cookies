@@ -1,11 +1,22 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
+import axios from "axios";
 import { useState } from "react";
-export default function LoginForm() {
+export default function LoginForm({
+  afterSubmit,
+}: {
+  afterSubmit: () => void;
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    axios.post(`${API_BASE_URL}/login`, {
+      email,
+      password,
+    });
     e.preventDefault();
+    afterSubmit();
   };
   return (
     <form
