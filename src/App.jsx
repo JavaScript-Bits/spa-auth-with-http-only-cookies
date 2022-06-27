@@ -38,17 +38,13 @@ function AuthProvider({ children }) {
   let [user, setUser] = React.useState(null);
 
   let signin = (newUser, callback) => {
-    return fakeAuthProvider.signin(() => {
-      setUser(newUser);
+    setUser(newUser);
       callback();
-    });
   };
 
   let signout = (callback) => {
-    return fakeAuthProvider.signout(() => {
-      setUser(null);
+    setUser(null);
       callback();
-    });
   };
 
   let value = { user, signin, signout };
@@ -56,12 +52,13 @@ function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-function useAuth() {
+export function useAuth() {
   return React.useContext(AuthContext);
 }
 
 function RequireAuth({ children }) {
   let auth = useAuth();
+  console.log({ auth });
   let location = useLocation();
 
   if (!auth.user) {
