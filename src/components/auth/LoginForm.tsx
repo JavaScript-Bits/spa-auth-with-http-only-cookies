@@ -1,7 +1,7 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
-import axios from "axios";
-import { useState } from "react";
-import { signIn } from "../../services/authService";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthProvider";
+import { attemptLogin } from "../../services/authService";
 export default function LoginForm({
   afterSubmit,
 }: {
@@ -9,13 +9,12 @@ export default function LoginForm({
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { status } = await signIn(email, password);
-    if (status === 200) {
-      afterSubmit();
-    }
+    const { status, data } = await attemptLogin(email, password);
+    login(data, afterSubmit);
   };
   return (
     <form

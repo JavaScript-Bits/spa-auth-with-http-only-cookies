@@ -2,8 +2,8 @@ import { createContext, useState } from "react";
 
 interface AuthContextType {
   user: any;
-  signin: (user: string, callback: VoidFunction) => void;
-  signout: (callback: VoidFunction) => void;
+  login: (user: string, callback: VoidFunction) => void;
+  logOut: (callback: VoidFunction) => void;
 }
 
 export let AuthContext = createContext<AuthContextType>(null!);
@@ -11,17 +11,17 @@ export let AuthContext = createContext<AuthContextType>(null!);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   let [user, setUser] = useState<any>(null);
 
-  let signin = (newUser: string, callback: VoidFunction) => {
+  let login = (newUser: string, callback: VoidFunction) => {
     setUser(newUser);
     callback();
   };
 
-  let signout = (callback: VoidFunction) => {
+  let logOut = (callback: VoidFunction) => {
     setUser(null);
     callback();
   };
 
-  let value = { user, signin, signout };
+  let value = { user, login, logOut };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
